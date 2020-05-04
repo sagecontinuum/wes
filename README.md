@@ -1,5 +1,5 @@
 # Waggle Edge Stack (WES)
-#### Lead(s): [Sean Shahkarami](mailto:sshahkarami@uchicago.edu) and [Joe Swantek](mailto:joseph.swantek@northwestern.edu)
+#### Lead(s): Sean Shahkarami and Joe Swantek
 
 ### Overview:
 Waggle nodes host a Linux-based Node Controller (NC) and an Edge Processor (EP) for processing sensor data in-situ. The WES includes the [operating system image and Waggle services](https://github.com/waggle-sensor/waggle-image-v2) running on the [NC](https://github.com/waggle-sensor/nodecontroller) and [EP](https://github.com/waggle-sensor/edge_processor) as well as the ML run-time libraries and tools. It also manages cybersecurity, certificate management, and manages system resources, such as power, memory, and cores. It constantly updates its state with the cloud server to fetch and perform any task scheduled from [SES](https://github.com/sagecontinuum/ses).
