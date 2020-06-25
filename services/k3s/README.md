@@ -6,9 +6,9 @@ Kubernetes is a tool that deploys and manages applications. In every Waggle/SAGE
 
 To install k3d,
 ```
-$ apt-get update
-apt-get install -y curl
-wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+$ apt-get update \
+  && apt-get install -y curl \
+  && wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
 ```
 
 To run a k3s cluster in Docker,
