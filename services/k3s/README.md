@@ -14,7 +14,7 @@ $ apt-get update \
 To run a k3s cluster in Docker,
 ```
 $ k3d create cluster \
-  --name waggle-k3s
+  --name waggle-k3s \
   --auto-restart
 ```
 
