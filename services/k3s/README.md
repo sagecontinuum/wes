@@ -2,7 +2,7 @@
 
 Kubernetes is a tool that deploys and manages applications. In every Waggle/SAGE node, one Kubernetes cluster exists and each device in the node runs one kubernetes node. A Kubernetes master (or server) runs on the device that talks to the outside world (in other words, the device that directly reaches out to Internet). The lightweight version of Kubernetes, as known as k3s, is the Kubernetes master in Waggle/SAGE nodes.
 
-#### Setting up a k3s server
+#### Setting Up A k3s Server
 
 To install k3d,
 ```
@@ -38,3 +38,22 @@ e1faf158bff70   8ae59e1bfb260   About a minute ago   Running   coredns          
 d55a52956a631   f9499facb1e8c   About a minute ago   Running   metrics-server           0          2c0ea9a2f2e40
 07434a3dade7d   caea073758499   About a minute ago   Running   local-path-provisioner   0          e515f3ee68e83
 ```
+
+#### Interfacing To The k3s Server
+
+To command to the server via [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/),
+
+```
+# on the host where k3d is installed
+$ kubectl --kubeconfig=$(k3d get-kubeconfig --name=waggle-k3s) get po --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS      RESTARTS   AGE
+kube-system   metrics-server-6d684c7b5-ttzx9            1/1     Running     0          4h41m
+kube-system   local-path-provisioner-58fb86bdfd-j8tl4   1/1     Running     0          4h41m
+kube-system   helm-install-traefik-xs4pt                0/1     Completed   0          4h41m
+kube-system   svclb-traefik-md254                       2/2     Running     0          4h41m
+kube-system   coredns-d798c9dd-lxc2v                    1/1     Running     0          4h41m
+kube-system   traefik-6787cddb4b-6zlgg                  1/1     Running     0          4h41m
+```
+
+Or use Python client for Kubernetes APIs (See [examples](https://github.com/kubernetes-client/python#examples))
+
