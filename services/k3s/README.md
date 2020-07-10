@@ -57,3 +57,34 @@ kube-system   traefik-6787cddb4b-6zlgg                  1/1     Running     0   
 
 Or use Python client for Kubernetes APIs (See [examples](https://github.com/kubernetes-client/python#examples))
 
+#### Simple Deployment in A k3s
+
+```
+# export KUBECONFIG="$(k3d get-kubeconfig --name='waggle-k3s')"
+$ cat k3s_example.yaml 
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        name: nginx
+$ kubectl apply -f k3s_example.yaml 
+deployment.apps/nginx-deployment created
+$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           105s
+```
+
