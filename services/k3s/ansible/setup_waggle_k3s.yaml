@@ -1,0 +1,37 @@
+---
+- hosts: nx
+  vars:
+    user: nx
+  strategy: free
+  gather_facts: no
+  remote_user: "{{ user }}"
+  tasks:
+    - name: check k3d version
+      shell: k3d version
+      register: k3d
+    - debug:
+        msg: "{{k3d.stdout}}"
+    - name: query cluster info
+      shell: k3d get cluster --no-headers | grep waggle-k3s || true
+      register: cluster
+    - debug:
+        msg: "{{cluster.stdout}}"
+    - name: delete existing waggle-k3s cluster
+      shell: k3d delete cluster waggle-k3s
+      when: cluster.stdout
+    - name: create a new waggle-k3s cluster
+      shell: |
+        k3d create cluster waggle-k3s \
+        --api-port 6443 \
+        --no-lb \
+        --workers 1
+    - name: wait for the cluster be ready
+      shell: |
+        docker exec -ti k3d-waggle-k3s-master-0 \
+        kubectl get nodes k3d-waggle-k3s-master-0 \
+        --no-headers \
+        -o custom-columns=STATUS:status.conditions[-1].type
+      register: result
+      until: result.stdout == "Ready"
+      retries: 5
+      delay: 10
