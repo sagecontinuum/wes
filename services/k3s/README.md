@@ -8,19 +8,22 @@ To install k3d,
 ```
 $ apt-get update \
   && apt-get install -y curl \
-  && wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+  && wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | TAG=v3.0.0-rc.6 bash
 ```
 
 To run a k3s cluster in Docker,
 ```
-$ k3d create cluster \
-  --name waggle-k3s \
-  --auto-restart
+$ k3d create cluster waggle-k3s \
+  --api-port 6443 \
+  --no-lb \
+  --workers 1
 ```
+
+[Ansible scripts](ansible) are available for the install and run described above. 
 
 To query the live containers,
 ```
-$ docker exec -ti k3d-waggle-k3s-server kubectl get pods --all-namespaces
+$ docker exec -ti k3d-waggle-k3s-master-0 kubectl get pods --all-namespaces
 NAMESPACE     NAME                                      READY   STATUS      RESTARTS   AGE
 kube-system   local-path-provisioner-58fb86bdfd-rflsp   1/1     Running     0          4m14s
 kube-system   metrics-server-6d684c7b5-fglwn            1/1     Running     0          4m14s
@@ -29,7 +32,7 @@ kube-system   helm-install-traefik-6g9n2                0/1     Completed   2   
 kube-system   svclb-traefik-d6fk6                       2/2     Running     0          3m20s
 kube-system   traefik-6787cddb4b-qgmzx                  1/1     Running     0          3m21s
 # or
-$ docker exec -ti k3d-waggle-k3s-server crictl ps
+$ docker exec -ti k3d-waggle-k3s-master-0 crictl ps
 CONTAINER       IMAGE           CREATED              STATE      NAME                     ATTEMPT   POD ID
 ab7f548c919f9   1cdb7e2bd5e25   14 seconds ago       Running   traefik                  0          a22bc871398f6
 dd005538f97de   9be4f056f04b7   14 seconds ago       Running   lb-port-443              0          7cb5cf72d7666
