@@ -14,7 +14,7 @@
         state: present
     - name: download k3d installation script
       get_url:
-        url: https://raw.githubusercontent.com/rancher/k3d/master/install.sh
+        url: https://raw.githubusercontent.com/rancher/k3d/main/install.sh
         dest: /tmp/k3d.sh
         mode: "u=rwx,g=rx,o=rx"
     - name: install k3d
