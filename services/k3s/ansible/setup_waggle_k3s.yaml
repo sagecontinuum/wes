@@ -25,13 +25,21 @@
         --api-port 6443 \
         --no-lb \
         --workers 1
+    - name: wait for the cluster be spawned
+      shell: |
+        docker exec k3d-waggle-k3s-master-0 \
+        kubectl get nodes --no-headers
+      register: result
+      until: result.stdout.find("waggle-k3s-master") != -1
+      retries: 5
+      delay: 10
     - name: wait for the cluster be ready
       shell: |
-        docker exec -ti k3d-waggle-k3s-master-0 \
+        docker exec k3d-waggle-k3s-master-0 \
         kubectl get nodes k3d-waggle-k3s-master-0 \
         --no-headers \
         -o custom-columns=STATUS:status.conditions[-1].type
       register: result
-      until: result.stdout == "Ready"
+      until: result.stdout.find("Ready") != -1
       retries: 5
       delay: 10
