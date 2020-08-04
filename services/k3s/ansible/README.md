@@ -35,3 +35,5 @@ The k3s cluster will be able to talk to the ECR registry we set. ECR has to supp
 To set up a Docker registry, refer [this](https://docs.docker.com/registry/deploying/). To enable TLS support, see [this](https://docs.docker.com/registry/configuration/#tls).
 
 Using k3d registry is not currently supported in v3 as of July 2020 (See [more](https://k3d.io/usage/guides/registries/#using-the-k3d-registry)).
+
+See [this](https://rancher.com/docs/k3s/latest/en/installation/private-registry/) for more information on /etc/rancher/k3s/registries.yaml with and without TLS options.
