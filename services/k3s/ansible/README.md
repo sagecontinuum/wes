@@ -28,9 +28,9 @@ To launch a k3s cluster,
 $ ansible-playbook -i nx.nodes setup_waggle_k3s.yaml
 ```
 
-#### ECR registry
+#### Notes on ECR Registry
 
-The k3s cluster will be able to talk to the ecr registry we set. The registry may does not support TLS. ECR has to support TLS and any non-TLS registry setup CANNOT be used in production, but only used in development.
+The k3s cluster will be able to talk to the ECR registry we set. ECR has to support TLS and any non-TLS registry setup CANNOT be used in production, but only used in development.
 
 To set up a Docker registry, refer [this](https://docs.docker.com/registry/deploying/). To enable TLS support, see [this](https://docs.docker.com/registry/configuration/#tls).
 
