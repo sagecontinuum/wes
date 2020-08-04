@@ -2,6 +2,7 @@
 - hosts: nx
   vars:
     user: nx
+    ecr_registry: registry_address:5000
   strategy: free
   gather_facts: no
   remote_user: "{{ user }}"
@@ -19,9 +20,27 @@
     - name: delete existing waggle-k3s cluster
       shell: k3d delete cluster waggle-k3s
       when: cluster.stdout
+    - name: create k3s configuration directory
+      file:
+        path: /home/{{ user }}/sage/k3s
+        state: directory
+        mode: "u=rwx,g=rx,o=rx"
+    - name: copy ecr registry
+      copy:
+        src: etc/rancher/k3s/registries.yaml
+        dest: /home/{{ user }}/sage/k3s/registries.yaml
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: "u=rwx,g=rx,o=rx"
+    - name: set ecr registry address
+      replace:
+        path: /home/{{ user }}/sage/k3s/registries.yaml
+        regexp: '\$\{ECR_REGISTRY\}'
+        replace: "{{ ecr_registry }}"
     - name: create a new waggle-k3s cluster
       shell: |
         k3d create cluster waggle-k3s \
+        -v /home/{{ user }}/sage/k3s/registries.yaml:/etc/rancher/k3s/registries.yaml \
         --api-port 6443 \
         --no-lb \
         --workers 1
