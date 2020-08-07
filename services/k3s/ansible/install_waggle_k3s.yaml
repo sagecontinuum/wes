@@ -26,3 +26,15 @@
       register: k3d
     - debug:
         msg: "{{k3d.stdout}}"
+    # - name: get the latest version of kubectl
+    #   uri:
+    #     url: https://storage.googleapis.com/kubernetes-release/release/stable.txt
+    #     return_content: yes
+    #   register: kubectl_version
+    # - debug:
+    #     msg: "{{kubectl_version.stdout}}"
+    - name: download kubectl
+      get_url:
+        url: https://storage.googleapis.com/kubernetes-release/release/v1.18.6/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: "u=rwx,g=rx,o=rx"
