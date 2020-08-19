@@ -3,6 +3,7 @@
   vars:
     user: nx
     image_storage: /media/plugin-data-k3s
+    data_storage: /media/k3s-data
     ecr_registry: registry_address:5000
   strategy: free
   gather_facts: no
@@ -40,13 +41,19 @@
         replace: "{{ ecr_registry }}"
     # - name: create k3s image storage directory
     #   file:
-    #     path: {{ image_storage }}
+    #     path: "{{ image_storage }}"
     #     state: directory
     #     mode: "u=rwx,g=rx,o=rx"
+    - name: create k3s data storage directory
+      file:
+        path: "{{ data_storage }}"
+        state: directory
+        mode: "u=rwx,g=rx,o=rx"
     - name: create a new waggle-k3s cluster
       shell: |
         k3d create cluster waggle-k3s \
         -v /home/{{ user }}/sage/k3s/registries.yaml:/etc/rancher/k3s/registries.yaml \
+        -v {{ data_storage }}:/waggle \
         --api-port 6443 \
         --no-lb \
         --workers 1
