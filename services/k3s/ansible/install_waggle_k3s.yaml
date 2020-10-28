@@ -1,8 +1,8 @@
 ---
 - hosts: nx
   vars:
-    user: nx
-    k3d_tag: v3.0.0-rc.6
+    user: root
+    k3d_tag: v3.1.5
   strategy: free
   gather_facts: no
   remote_user: "{{ user }}"
